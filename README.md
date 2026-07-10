@@ -47,6 +47,8 @@ npm install
 npm run dev
 ```
 
+El script `predev` ensambla automáticamente el motor desde `src/main.partXX.js` y genera `src/main.js` antes de iniciar Vite.
+
 Para comprobar la compilación de producción:
 
 ```bash
@@ -57,7 +59,8 @@ npm run preview
 ## Arquitectura
 
 - `index.html`: interfaz, HUD y controles.
-- `src/main.js`: motor del juego, física arcade, planetas, shaders, audio y persistencia.
+- `src/main.part00.js` a `src/main.part07.js`: motor del juego, física arcade, planetas, shaders, audio y persistencia.
+- `scripts/assemble-main.mjs`: reconstruye automáticamente `src/main.js` antes del desarrollo o la compilación.
 - `src/styles.scss`: diseño adaptable para pantallas táctiles, retrato y horizontal.
 - `public/icons`: iconos de la aplicación instalable.
 - `vite.config.js`: compilación y configuración PWA.
@@ -69,10 +72,11 @@ Las texturas planetarias y todos los sonidos se generan en tiempo de ejecución,
 
 Cada `push` a `main` ejecuta GitHub Actions:
 
-1. Instala las dependencias con `npm ci`.
-2. Compila la versión optimizada con Vite.
-3. Genera el service worker y el manifiesto PWA.
-4. Publica `dist/` en GitHub Pages.
+1. Instala las dependencias con `npm install`.
+2. Ensambla el motor del juego.
+3. Compila la versión optimizada con Vite.
+4. Genera el service worker y el manifiesto PWA.
+5. Publica `dist/` en GitHub Pages.
 
 El workflow intenta habilitar GitHub Pages automáticamente. Si GitHub solicita aprobación del entorno `github-pages`, se puede autorizar desde la ejecución del workflow.
 
