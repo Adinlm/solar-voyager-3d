@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#030713" />
+    <meta name="description" content="Solar Voyager 3D: exploración espacial móvil en un sistema solar interactivo." />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/icon.svg" />
+    <title>Solar Voyager 3D</title>
+  </head>
+  <body>
+    <main id="game" aria-label="Juego espacial 3D"></main>
+    <canvas id="radar" width="180" height="180" aria-label="Radar del sistema solar"></canvas>
+
+    <div class="screen-effects" aria-hidden="true">
+      <div class="vignette"></div>
+      <div class="scanlines"></div>
+      <div class="speed-lines" id="speedLines"></div>
+      <div class="damage-flash" id="damageFlash"></div>
+    </div>
+
+    <section class="hud" id="hud" aria-live="polite">
+      <header class="topbar glass">
+        <div class="brand">
+          <strong>SOLAR VOYAGER</strong>
+          <span id="sectorLabel">SECTOR HELIOS · 01</span>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span>VELOCIDAD</span><strong id="speedValue">0 km/s</strong></div>
+          <div class="stat"><span>ENERGÍA</span><strong id="energyValue">100%</strong></div>
+          <div class="stat"><span>ESCUDO</span><strong id="shieldValue">100%</strong></div>
+          <div class="stat"><span>ATLAS</span><strong id="atlasValue">0/8</strong></div>
+        </div>
+
+        <div class="header-actions">
+          <button id="soundButton" class="icon-button" type="button" aria-label="Activar o silenciar sonido">🔊</button>
+          <button id="installButton" class="icon-button install-hidden" type="button" aria-label="Instalar juego">⇩</button>
+          <button id="fullscreenButton" class="icon-button" type="button" aria-label="Pantalla completa">⛶</button>
+          <button id="settingsButton" class="icon-button" type="button" aria-label="Opciones">⚙</button>
+        </div>
+      </header>
+
+      <aside class="mission-panel glass">
+        <div class="panel-kicker"><span>MISIÓN</span><span id="missionStage">CARTOGRAFÍA</span></div>
+        <h2 id="missionTitle">Escanea los ocho planetas</h2>
+        <p id="missionText">Sigue el marcador, entra en el rango azul y mantén ESCANEAR.</p>
+        <div class="progress-track"><span id="missionProgress"></span></div>
+      </aside>
+
+      <aside class="target-panel glass">
+        <div class="panel-kicker"><span>OBJETIVO</span><span id="targetStatus">NO ESCANEADO</span></div>
+        <div class="target-row">
+          <div>
+            <h2 id="targetName">Tierra</h2>
+            <p id="targetDistance">— km</p>
+          </div>
+          <button id="cycleTargetButton" class="small-button" type="button">CAMBIAR</button>
+        </div>
+        <div class="scan-track"><span id="scanProgress"></span></div>
+      </aside>
+
+      <div class="center-marker" aria-hidden="true">
+        <i></i><b></b><i></i>
+      </div>
+      <div id="targetMarker" class="target-marker" aria-hidden="true">
+        <span></span><strong id="markerDistance">0 km</strong>
+      </div>
+
+      <div class="score-pill glass">PUNTOS <strong id="scoreValue">000000</strong></div>
+      <div class="quality-pill glass" id="qualityValue">CALIDAD: ALTA</div>
+      <div class="toast glass" id="toast"><strong id="toastTitle"></strong><span id="toastText"></span></div>
+      <div class="warning glass" id="warning"></div>
+    </section>
+
+    <section class="mobile-controls" aria-label="Controles táctiles">
+      <div id="joystick" class="joystick" role="application" aria-label="Joystick de dirección">
+        <div class="joystick-ring"></div>
+        <div id="joystickKnob" class="joystick-knob"></div>
+        <span>DIRIGIR</span>
+      </div>
+
+      <div class="action-grid">
+        <button id="autopilotButton" class="action-button secondary" type="button"><strong>AUTO</strong><span>PILOTO</span></button>
+        <button id="scanButton" class="action-button scan" type="button"><strong>ESCANEAR</strong><span id="scanHint">FUERA DE RANGO</span></button>
+        <button id="brakeButton" class="action-button secondary" type="button"><strong>FRENO</strong><span>PRECISIÓN</span></button>
+        <button id="boostButton" class="action-button boost" type="button"><strong>IMPULSO</strong><span>ENERGÍA</span></button>
+      </div>
+    </section>
+
+    <section id="startOverlay" class="overlay start-overlay">
+      <div class="start-card glass">
+        <div class="logo-orbit"><span>✦</span></div>
+        <p class="eyebrow">EXPEDICIÓN HELIOS · VERSIÓN 2.0</p>
+        <h1>SOLAR<br /><em>VOYAGER</em></h1>
+        <p class="start-copy">Pilota, escanea planetas, recoge fragmentos de energía y atraviesa el cinturón de asteroides en un sistema solar 3D compacto.</p>
+        <div class="feature-grid">
+          <div><strong>3D</strong><span>SHADERS + BLOOM</span></div>
+          <div><strong>PWA</strong><span>INSTALABLE</span></div>
+          <div><strong>♫</strong><span>AUDIO PROCEDURAL</span></div>
+        </div>
+        <button id="startButton" class="primary-button" type="button">INICIAR EXPEDICIÓN</button>
+        <div class="start-actions">
+          <button id="continueButton" class="text-button" type="button">CONTINUAR PARTIDA</button>
+          <button id="resetButton" class="text-button danger-text" type="button">BORRAR PROGRESO</button>
+        </div>
+        <small>Recomendado: teléfono horizontal, audífonos y navegador actualizado.</small>
+      </div>
+    </section>
+
+    <section id="settingsOverlay" class="overlay settings-overlay hidden" aria-label="Opciones">
+      <div class="settings-card glass">
+        <div class="settings-header"><h2>OPCIONES DE NAVE</h2><button id="closeSettingsButton" class="icon-button" type="button">✕</button></div>
+        <label><span>Calidad gráfica</span><select id="qualitySelect"><option value="auto">Automática</option><option value="high">Alta</option><option value="medium">Media</option><option value="low">Rendimiento</option></select></label>
+        <label><span>Sensibilidad</span><input id="sensitivityRange" type="range" min="0.55" max="1.6" step="0.05" value="1" /></label>
+        <label class="toggle-row"><span>Inclinación del teléfono</span><input id="gyroToggle" type="checkbox" /></label>
+        <label class="toggle-row"><span>Vibración</span><input id="hapticsToggle" type="checkbox" checked /></label>
+        <p>Teclado: WASD o flechas · Shift impulso · Espacio escanear · E piloto automático · C cambiar objetivo.</p>
+      </div>
+    </section>
+
+    <section id="endOverlay" class="overlay end-overlay hidden">
+      <div class="end-card glass">
+        <p class="eyebrow">EXPEDICIÓN COMPLETADA</p>
+        <h2>ATLAS DEL SISTEMA TERMINADO</h2>
+        <div class="end-score"><span>PUNTUACIÓN</span><strong id="finalScore">0</strong></div>
+        <p id="finalSummary">Has cartografiado el sistema solar.</p>
+        <button id="restartButton" class="primary-button" type="button">NUEVA EXPEDICIÓN</button>
+      </div>
+    </section>
+
+    <noscript>Este juego necesita JavaScript para ejecutarse.</noscript>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
