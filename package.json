@@ -4,10 +4,14 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
+    "assemble": "node scripts/assemble-main.mjs",
+    "predev": "npm run assemble",
     "dev": "vite --host 0.0.0.0",
+    "prebuild": "npm run assemble",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0",
-    "check": "vite build"
+    "precheck": "npm run assemble",
+    "check": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
     "three": "0.185.1"
