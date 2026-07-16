@@ -10,8 +10,10 @@ permissions:
   pages: write
   id-token: write
 
+# Keep this workflow independent from GitHub's automatic branch-based
+# Pages workflow, which may still be enabled in the repository settings.
 concurrency:
-  group: pages
+  group: solar-voyager-pages
   cancel-in-progress: true
 
 jobs:
@@ -20,7 +22,28 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Prefer GitHub Actions as the Pages source
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          status=$(curl --silent --show-error \
+            --output /tmp/pages-response.json \
+            --write-out "%{http_code}" \
+            --request PUT \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages" \
+            --data '{"build_type":"workflow"}')
+
+          if [ "$status" != "204" ]; then
+            echo "Could not change the Pages source automatically (HTTP $status)."
+            cat /tmp/pages-response.json
+            exit 1
+          fi
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -28,7 +51,7 @@ jobs:
           enablement: true
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
 
@@ -51,6 +74,13 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # If branch publishing is still active, its automatic workflow can race
+      # this one and replace dist/ with the raw repository. Waiting makes the
+      # compiled Vite artifact the final deployment.
+      - name: Wait for any legacy Pages deployment
+        if: github.event_name == 'push'
+        run: sleep 75
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
