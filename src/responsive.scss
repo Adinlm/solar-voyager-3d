@@ -116,13 +116,13 @@
 
   #hud .toast {
     top: calc(var(--safe-top) + clamp(218px, 31svh, 270px));
-    width: min(440px, calc(100vw - (var(--ui-edge) * 2)));
+    width: min(440px, calc(100vw - var(--ui-edge) - var(--ui-edge)));
     min-width: 0;
   }
 
   #hud .warning {
     top: calc(var(--safe-top) + clamp(274px, 39svh, 332px));
-    width: min(440px, calc(100vw - (var(--ui-edge) * 2)));
+    width: min(440px, calc(100vw - var(--ui-edge) - var(--ui-edge)));
     min-width: 0;
   }
 
