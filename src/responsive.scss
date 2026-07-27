@@ -1,0 +1,324 @@
+:root {
+  --ui-edge: clamp(8px, 2.5vw, 16px);
+  --portrait-joystick-size: clamp(100px, 28vw, 126px);
+  --portrait-actions-width: clamp(184px, 52vw, 220px);
+  --portrait-actions-height: clamp(116px, 32vw, 140px);
+}
+
+@supports (height: 100dvh) {
+  html,
+  body {
+    height: 100dvh;
+  }
+}
+
+/*
+ * Responsive overrides loaded after the main stylesheet.
+ * The selectors intentionally include a parent or an ID so they keep
+ * precedence even if Vite changes the final CSS bundle order.
+ */
+@media (orientation: portrait) {
+  #hud .topbar {
+    left: max(var(--safe-left), var(--ui-edge));
+    right: max(var(--safe-right), var(--ui-edge));
+    min-height: clamp(52px, 8svh, 60px);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(6px, 2vw, 10px);
+    padding: 7px clamp(7px, 2vw, 10px) 7px clamp(10px, 3vw, 14px);
+  }
+
+  #hud .brand {
+    min-width: 0;
+  }
+
+  #hud .brand strong {
+    font-size: clamp(11px, 3.4vw, 13px);
+    letter-spacing: clamp(0.1em, 0.8vw, 0.16em);
+  }
+
+  #hud .brand span {
+    font-size: clamp(7px, 2.2vw, 9px);
+  }
+
+  #hud .header-actions {
+    gap: clamp(4px, 1.4vw, 7px);
+  }
+
+  #hud .icon-button {
+    width: clamp(34px, 10vw, 39px);
+    height: clamp(34px, 10vw, 39px);
+    border-radius: clamp(10px, 3vw, 12px);
+  }
+
+  #hud .stats {
+    top: calc(100% + clamp(6px, 1.8vw, 9px));
+    left: 0;
+    right: 0;
+    width: 100%;
+    gap: clamp(4px, 1.5vw, 7px);
+    justify-content: stretch;
+  }
+
+  #hud .stat {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: clamp(5px, 1.7vw, 7px) 2px;
+  }
+
+  #hud .stat span {
+    font-size: clamp(6px, 1.9vw, 8px);
+    letter-spacing: clamp(0.08em, 0.5vw, 0.15em);
+    white-space: nowrap;
+  }
+
+  #hud .stat strong {
+    font-size: clamp(12px, 3.8vw, 15px);
+    white-space: nowrap;
+  }
+
+  #hud .mission-panel,
+  #hud .target-panel {
+    top: calc(var(--safe-top) + clamp(116px, 16svh, 128px));
+    width: calc(50% - max(14px, var(--ui-edge)));
+    padding: clamp(8px, 2.4vw, 10px);
+  }
+
+  #hud .mission-panel {
+    left: max(var(--safe-left), var(--ui-edge));
+  }
+
+  #hud .target-panel {
+    right: max(var(--safe-right), var(--ui-edge));
+  }
+
+  #hud .panel-kicker {
+    gap: 4px;
+    font-size: clamp(6px, 1.9vw, 8px);
+    letter-spacing: clamp(0.08em, 0.5vw, 0.15em);
+    white-space: nowrap;
+  }
+
+  #hud .mission-panel h2,
+  #hud .target-panel h2 {
+    font-size: clamp(11px, 3.2vw, 13px);
+    line-height: 1.15;
+  }
+
+  #hud .mission-panel p,
+  #hud .target-panel p {
+    font-size: clamp(9px, 2.6vw, 11px);
+  }
+
+  #hud .progress-track,
+  #hud .scan-track {
+    margin-top: clamp(6px, 2vw, 10px);
+  }
+
+  #hud .toast {
+    top: calc(var(--safe-top) + clamp(218px, 31svh, 270px));
+    width: min(440px, calc(100vw - var(--ui-edge) - var(--ui-edge)));
+    min-width: 0;
+  }
+
+  #hud .warning {
+    top: calc(var(--safe-top) + clamp(274px, 39svh, 332px));
+    width: min(440px, calc(100vw - var(--ui-edge) - var(--ui-edge)));
+    min-width: 0;
+  }
+
+  body #radar {
+    left: max(var(--safe-left), var(--ui-edge));
+    bottom: calc(max(var(--safe-bottom), var(--ui-edge)) + var(--portrait-joystick-size) - 8px);
+    width: clamp(72px, 23vw, 92px);
+    height: clamp(72px, 23vw, 92px);
+  }
+
+  body .mobile-controls .joystick {
+    left: max(var(--safe-left), var(--ui-edge));
+    bottom: max(var(--safe-bottom), var(--ui-edge));
+    width: var(--portrait-joystick-size);
+    height: var(--portrait-joystick-size);
+  }
+
+  body .mobile-controls .joystick-ring {
+    inset: clamp(6px, 2vw, 8px);
+  }
+
+  body .mobile-controls .joystick-knob {
+    width: clamp(48px, 14vw, 62px);
+    height: clamp(48px, 14vw, 62px);
+  }
+
+  body .mobile-controls .action-grid {
+    right: max(var(--safe-right), var(--ui-edge));
+    bottom: max(var(--safe-bottom), var(--ui-edge));
+    width: var(--portrait-actions-width);
+    height: var(--portrait-actions-height);
+    grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(64px, 1.25fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: clamp(6px, 1.8vw, 9px);
+  }
+
+  body .mobile-controls #autopilotButton {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  body .mobile-controls #brakeButton {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body .mobile-controls #boostButton {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+
+  body .mobile-controls #scanButton {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+
+  body .mobile-controls .action-button.scan {
+    grid-row: 1 / 3;
+  }
+
+  body .mobile-controls .action-button {
+    border-radius: clamp(13px, 4vw, 18px);
+    min-width: 0;
+  }
+
+  body .mobile-controls .action-button strong {
+    font-size: clamp(9px, 2.8vw, 11px);
+    letter-spacing: clamp(0.04em, 0.4vw, 0.08em);
+  }
+
+  body .mobile-controls .action-button span {
+    font-size: clamp(6px, 1.8vw, 7px);
+    letter-spacing: clamp(0.07em, 0.4vw, 0.12em);
+  }
+
+  #hud .score-pill {
+    bottom: calc(max(var(--safe-bottom), var(--ui-edge)) + var(--portrait-actions-height) + 10px);
+    max-width: min(48vw, 170px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #hud .center-marker {
+    top: 52%;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 380px) {
+  :root {
+    --ui-edge: 8px;
+    --portrait-actions-width: clamp(180px, 52vw, 198px);
+  }
+
+  #hud .brand span {
+    display: none;
+  }
+
+  #hud .brand strong {
+    max-width: 92px;
+    line-height: 1.05;
+  }
+
+  #hud .icon-button {
+    width: clamp(33px, 9.5vw, 36px);
+    height: clamp(33px, 9.5vw, 36px);
+  }
+
+  #hud .mission-panel,
+  #hud .target-panel {
+    width: calc(50% - 12px);
+  }
+
+  #hud .toast,
+  #hud .warning {
+    padding-inline: 12px;
+  }
+}
+
+@media (orientation: portrait) and (max-height: 700px) {
+  :root {
+    --portrait-joystick-size: clamp(96px, 27vw, 112px);
+    --portrait-actions-height: clamp(104px, 29vw, 122px);
+  }
+
+  #hud .topbar {
+    min-height: 50px;
+  }
+
+  #hud .brand span,
+  #hud .mission-panel p {
+    display: none;
+  }
+
+  #hud .mission-panel,
+  #hud .target-panel {
+    top: calc(var(--safe-top) + 108px);
+    padding-block: 7px;
+  }
+
+  #hud .toast {
+    top: calc(var(--safe-top) + 194px);
+  }
+
+  #hud .warning {
+    top: calc(var(--safe-top) + 246px);
+  }
+}
+
+@media (orientation: landscape) {
+  body .mobile-controls .action-grid {
+    width: clamp(232px, 34vw, 300px);
+    height: clamp(118px, 28vh, 150px);
+    grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(76px, 1.3fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+
+  body .mobile-controls #autopilotButton {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  body .mobile-controls #brakeButton {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body .mobile-controls #boostButton {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+
+  body .mobile-controls #scanButton,
+  body .mobile-controls .action-button.scan {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+
+  #hud .score-pill {
+    bottom: calc(var(--safe-bottom) + 12px);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 480px) {
+  body .mobile-controls .joystick {
+    width: clamp(108px, 30vh, 126px);
+    height: clamp(108px, 30vh, 126px);
+  }
+
+  body .mobile-controls .action-grid {
+    width: clamp(218px, 34vw, 260px);
+    height: clamp(104px, 28vh, 126px);
+  }
+
+  body #radar {
+    width: clamp(82px, 22vh, 96px);
+    height: clamp(82px, 22vh, 96px);
+  }
+}
